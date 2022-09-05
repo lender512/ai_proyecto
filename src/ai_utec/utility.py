@@ -19,9 +19,15 @@ def random_split(x, y, p):
 def norm(x, xmin, xmax):
         return (x-xmin)/(xmax-xmin)
 
+def dumbNorm(x, xmin, xmax):
+        return x
+
 
 def denorm(x, xmin, xmax):
         return x*(xmax-xmin) + xmin
+
+def dumbDenorm(x, xmin, xmax):
+        return x
 
 def add_bias(x):
         bias_col = np.ones((x.shape[0],1))
@@ -37,8 +43,14 @@ def weighted_sum(x, w):
 def difference(ans, prd):
         return (ans.T - prd)[0]
 
-def lm_loss(x, y, w, diff):
+def lm_loss_mse(x, y, w, diff):
         return np.dot(diff, diff)/(2*diff.shape[0])
+
+def lm_loss_mae(x, y, w, diff):
+        return np.sum(np.abs(diff))/(2*diff.shape[0])
+
+def lm_loss_rmse(x, y, w, diff):
+        return np.sqrt(lm_loss_mse(x, y, w, diff))
 
 def lm_delta(x, y, w, diff):
         return np.matmul(diff, -x)/diff.shape[0]
@@ -54,10 +66,10 @@ def random_batch_gen(size):
         return random_batch
 
 def r_squared(ans, prd):
-        mean = ans.mean()
-        ans_dif = mean - ans
-        prd_dif = mean - prd
-        return sum(prd_dif**2)/sum(ans_dif**2)
+        ybar = np.sum(ans)/len(ans)          # or sum(y)/len(y)
+        ssreg = np.sum((prd-ybar)**2)   # or sum([ (yihat - ybar)**2 for yihat in yhat])
+        sstot = np.sum((ans - ybar)**2)
+        return ssreg / sstot
 
 
 def classic_split(x,y):

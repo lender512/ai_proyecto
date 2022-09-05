@@ -1,8 +1,8 @@
 import numpy as np
 
 def train(x_train, y_train, x_val, y_val, epochs, alpha, norm_f, denorm_f, extra_f, winit_f, hypo_f, diff_f, loss_f, delta_f, update_f, batch_f):
-
-    loss_train, loss_val = np.zeros(epochs), np.zeros(epochs)
+    
+    loss_train, loss_val, dw_list = np.zeros(epochs), np.zeros(epochs), np.zeros(epochs)
 
     x_min, x_max = x_train.min(axis=0), x_train.max(axis=0)
     y_min, y_max = y_train.min(axis=0), y_train.max(axis=0)
@@ -26,6 +26,7 @@ def train(x_train, y_train, x_val, y_val, epochs, alpha, norm_f, denorm_f, extra
         loss_val[i] = loss_f(x_vb, y_vb, w, diff_vb)
 
         dw = delta_f(x_tb, y_tb, w, diff_tb)
+        dw_list[i] = dw[0]
         w = update_f(w, dw, alpha)
         
 
@@ -36,5 +37,5 @@ def train(x_train, y_train, x_val, y_val, epochs, alpha, norm_f, denorm_f, extra
         y = denorm_f(y_n, y_min, y_max)
         return y
 
-    return w, predict, loss_train, loss_val
+    return w, predict, loss_train, loss_val, dw_list
 
