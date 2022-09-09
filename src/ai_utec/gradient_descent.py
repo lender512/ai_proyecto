@@ -1,7 +1,7 @@
 import numpy as np
 
 def train(x_train, y_train, x_val, y_val, epochs, alpha, norm_f, denorm_f, extra_f, winit_f, hypo_f, diff_f, loss_f, delta_f, update_f, batch_f):
-    
+    np.random.seed(1923)
     loss_train, loss_val, dw_list = np.zeros(epochs), np.zeros(epochs), np.zeros(epochs)
 
     x_min, x_max = x_train.min(axis=0), x_train.max(axis=0)

@@ -73,6 +73,7 @@ def r_squared(ans, prd):
 
 
 def classic_split(x,y):
+        np.random.seed(2001)
         x_train, y_train, x_vt, y_vt = random_split(x = x, y = y, p = 0.7)
         x_val, y_val, x_test, y_test = random_split(x = x_vt, y = y_vt, p = 0.5)
         return x_train, y_train, x_val, y_val, x_test, y_test
